@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS Digital — Lead Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#fafafb;
+  --surface:#ffffff;
+  --surface-alt:#f6f6f7;
+  --surface-selected:#f1f8f5;
+  --surface-critical:#fef7f7;
+  --surface-warning:#fffbf3;
+  --surface-info:#f2f7fe;
+  --surface-success:#f1f8f5;
+  --border:#e3e5e8;
+  --border-strong:#c9ccd0;
+  --border-focus:#008060;
+  --text:#1a1c1f;
+  --text-secondary:#5c5f65;
+  --text-tertiary:#8b8f96;
+  --text-critical:#d72c0d;
+  --text-warning:#916a00;
+  --text-success:#008060;
+  --text-info:#005bd3;
+  --brand:#008060;
+  --brand-hover:#006e52;
+  --brand-pressed:#005e46;
+  --brand-dark:#004a37;
+  --success-bg:#aee9d1;
+  --warning-bg:#ffea8a;
+  --critical-bg:#fed3d1;
+  --shadow-xs:0 1px 0 rgba(0,0,0,0.04);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md:0 4px 8px rgba(0,0,0,0.05),0 0 0 1px rgba(0,0,0,0.02);
+  --shadow-lg:0 12px 32px rgba(0,0,0,0.08);
+  --radius-sm:6px;
+  --radius:10px;
+  --radius-lg:14px;
+  --radius-xl:20px;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',-apple-system,sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-tertiary)}
+
+/* NAV */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  height:60px;
+  display:flex;
+  align-items:center;
+  padding:0 24px;
+  gap:16px;
+}
+.nav-logo{display:flex;align-items:center;gap:11px;margin-right:auto}
+.logo-icon{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 100%);
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.4px;
+  box-shadow:0 2px 6px rgba(0,128,96,0.25);
+}
+.logo-text{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.3px}
+.logo-sub{font-size:12px;color:var(--text-secondary);font-weight:500;margin-left:2px}
+
+.nav-metric{display:flex;align-items:center;gap:20px;padding:0 18px;border-left:1px solid var(--border)}
+.nav-metric:first-of-type{border-left:none}
+.metric-block{display:flex;flex-direction:column;align-items:center}
+.metric-val{font-size:17px;font-weight:700;color:var(--text);font-family:'JetBrains Mono',monospace;line-height:1}
+.metric-lbl{font-size:10px;color:var(--text-secondary);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+
+/* HERO BANNER */
+.hero{
+  max-width:1400px;
+  margin:24px auto 0;
+  padding:0 24px;
+}
+.hero-banner{
+  position:relative;
+  background:linear-gradient(135deg,#004a37 0%,#008060 60%,#00a878 100%);
+  border-radius:var(--radius-lg);
+  padding:40px 44px;
+  overflow:hidden;
+  color:#fff;
+  box-shadow:var(--shadow-md);
+}
+.hero-banner::before{
+  content:'';
+  position:absolute;
+  top:-50%;right:-10%;
+  width:60%;height:200%;
+  background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hero-banner::after{
+  content:'';
+  position:absolute;
+  bottom:-30%;left:20%;
+  width:40%;height:100%;
+  background:radial-gradient(circle,rgba(255,255,255,0.05) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-content{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  flex-wrap:wrap;
+}
+.hero-left{flex:1;min-width:280px}
+.hero-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:12px;
+  font-weight:600;
+  color:#fff;
+  margin-bottom:14px;
+  backdrop-filter:blur(10px);
+}
+.hero-tag-dot{width:6px;height:6px;background:#a7f3d0;border-radius:50%;box-shadow:0 0 8px #a7f3d0}
+.hero-title{
+  font-size:32px;
+  font-weight:800;
+  letter-spacing:-0.8px;
+  line-height:1.15;
+  margin-bottom:10px;
+}
+.hero-title span{
+  background:linear-gradient(135deg,#a7f3d0,#fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:15px;
+  color:rgba(255,255,255,0.85);
+  max-width:520px;
+  line-height:1.55;
+}
+.hero-right{
+  display:flex;
+  gap:24px;
+  align-items:center;
+}
+.hero-stat{text-align:center}
+.hero-stat-val{
+  font-size:32px;
+  font-weight:800;
+  color:#fff;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:-1px;
+  line-height:1;
+}
+.hero-stat-lbl{
+  font-size:11px;
+  color:rgba(255,255,255,0.7);
+  margin-top:5px;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  font-weight:600;
+}
+.hero-divider{width:1px;height:44px;background:rgba(255,255,255,0.2)}
+
+/* LAYOUT */
+.layout{
+  max-width:1400px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:24px;
+  padding:24px;
+}
+
+/* SIDEBAR */
+.sidebar{
+  background:var(--surface);
+  border-radius:var(--radius-lg);
+  padding:24px;
+  align-self:start;
+  position:sticky;
+  top:80px;
+  box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+}
+.sidebar-section{margin-bottom:26px}
+.sidebar-section:last-of-type{margin-bottom:20px}
+.sidebar-title{
+  font-size:11px;
+  font-weight:700;
+  color:var(--text-secondary);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.sidebar-title::before{
+  content:'';
+  width:3px;
+  height:12px;
+  background:var(--brand);
+  border-radius:2px;
+}
+
+/* INPUTS */
+input,select,textarea{
+  background:var(--surface);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-sm);
+  padding:9px 12px;
+  font-size:14px;
+  color:var(--text);
+  font-family:inherit;
+  outline:none;
+  width:100%;
+  transition:all .15s;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--border-focus);
+  box-shadow:0 0 0 3px rgba(0,128,96,0.15);
+}
+input::placeholder{color:var(--text-tertiary)}
+select{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236d7175' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  padding-right:32px;
+  cursor:pointer;
+}
+
+/* INDUSTRY LIST */
+.industry-list{display:flex;flex-direction:column;gap:6px}
+.industry-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:var(--radius-sm);
+  border:1px solid var(--border);
+  background:var(--surface);
+  cursor:pointer;
+  transition:all .12s;
+  font-size:13px;
+  color:var(--text);
+  user-select:none;
+  font-weight:500;
+}
+.industry-item:hover{background:var(--surface-alt);border-color:var(--border-strong)}
+.industry-item.active{
+  background:var(--surface-selected);
+  border-color:var(--brand);
+  color:var(--brand);
+}
+.industry-emoji{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.industry-check{
+  margin-left:auto;
+  width:20px;height:20px;
+  border-radius:5px;
+  border:1.5px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+  flex-shrink:0;
+  color:transparent;
+  transition:all .12s;
+}
+.industry-item.active .industry-check{
+  background:var(--brand);
+  border-color:var(--brand);
+  color:#fff;
+}
+
+/* CITY TAGS */
+.city-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.city-tag{
+  padding:5px 11px;
+  border-radius:14px;
+  border:1px solid var(--border-strong);
+  background:var(--surface);
+  font-size:12px;
+  color:var(--text);
+  cursor:pointer;
+  transition:all .12s;
+  font-weight:500;
+}
+.city-tag:hover{background:var(--surface-alt)}
+.city-tag.active{
+  background:var(--brand);
+  border-color:var(--brand);
+  color:#fff;
+}
+.input-row{display:flex;gap:6px}
+.input-row input{flex:1;font-size:13px;padding:7px 10px}
+
+/* BUTTONS */
+.btn{
+  font-family:inherit;
+  cursor:pointer;
+  border-radius:var(--radius-sm);
+  font-size:14px;
+  font-weight:600;
+  transition:all .12s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  justify-content:center;
+  border:1px solid transparent;
+  background:none;
+}
+.btn-primary{
+  background:var(--brand);
+  color:#fff;
+  padding:11px 16px;
+  width:100%;
+  box-shadow:0 1px 2px rgba(0,128,96,0.2);
+}
+.btn-primary:hover{background:var(--brand-hover);box-shadow:0 2px 8px rgba(0,128,96,0.3)}
+.btn-primary:active{background:var(--brand-pressed)}
+.btn-primary:disabled{background:var(--text-tertiary);cursor:not-allowed;box-shadow:none}
+
+.btn-default{
+  background:var(--surface);
+  color:var(--text);
+  border:1px solid var(--border-strong);
+  padding:8px 13px;
+  box-shadow:var(--shadow-xs);
+  font-weight:500;
+}
+.btn-default:hover{background:var(--surface-alt);border-color:var(--text-tertiary)}
+.btn-sm{padding:6px 11px;font-size:12px}
+
+/* MAIN */
+.main{overflow-y:auto}
+
+/* PAGE HEADER */
+.page-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+  gap:12px;
+}
+.page-title{font-size:22px;font-weight:700;color:var(--text);letter-spacing:-0.4px}
+.page-actions{display:flex;gap:8px}
+
+/* TOOLBAR */
+.toolbar{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:14px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+  box-shadow:var(--shadow-sm);
+}
+.search-wrap{flex:1;position:relative;min-width:220px}
+.search-wrap input{padding-left:38px}
+.search-icon{
+  position:absolute;
+  left:13px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--text-tertiary);
+  pointer-events:none;
+}
+
+.filter-tabs{display:flex;gap:3px;background:var(--surface-alt);padding:4px;border-radius:8px}
+.filter-tab{
+  padding:7px 14px;
+  border-radius:6px;
+  font-size:13px;
+  color:var(--text-secondary);
+  cursor:pointer;
+  border:none;
+  background:transparent;
+  font-family:inherit;
+  font-weight:600;
+  transition:all .12s;
+}
+.filter-tab:hover{color:var(--text)}
+.filter-tab.active{
+  background:var(--surface);
+  color:var(--text);
+  box-shadow:var(--shadow-xs);
+}
+
+/* PROGRESS */
+.progress-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:16px 20px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow-sm);
+}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-status{font-size:13px;color:var(--text);font-weight:600}
+.progress-pct{font-size:13px;color:var(--brand);font-family:'JetBrains Mono',monospace;font-weight:700}
+.progress-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--brand),#00a878);
+  border-radius:3px;
+  transition:width .4s;
+}
+
+/* LEAD CARD */
+.lead-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  margin-bottom:16px;
+  box-shadow:var(--shadow-sm);
+  transition:box-shadow .15s,transform .15s;
+}
+.lead-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+
+.lead-header{
+  padding:22px 28px;
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  border-bottom:1px solid var(--border);
+}
+.lead-avatar{
+  width:52px;height:52px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  flex-shrink:0;
+}
+.lead-header-content{flex:1;min-width:0}
+.lead-handle{display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+.lead-handle a{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text-info);
+  text-decoration:none;
+}
+.lead-handle a:hover{text-decoration:underline}
+.lead-followers-badge{
+  font-size:11px;
+  padding:3px 9px;
+  border-radius:12px;
+  background:var(--surface-alt);
+  color:var(--text-secondary);
+  font-family:'JetBrains Mono',monospace;
+  font-weight:600;
+  border:1px solid var(--border);
+}
+.lead-name{font-size:16px;color:var(--text);font-weight:600;margin-bottom:6px;letter-spacing:-0.2px}
+.lead-meta{
+  font-size:13px;
+  color:var(--text-secondary);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.lead-meta-dot{width:3px;height:3px;background:var(--text-tertiary);border-radius:50%}
+
+.lead-header-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.status-select{
+  padding:6px 28px 6px 12px !important;
+  font-size:12px !important;
+  font-weight:600;
+  border-radius:16px !important;
+  cursor:pointer;
+  width:auto !important;
+  background-position:right 9px center !important;
+  border-width:1.5px !important;
+}
+.status-select.status-new{background-color:var(--surface-alt);color:var(--text-secondary);border-color:var(--border-strong)}
+.status-select.status-dm{background-color:var(--surface-info);color:var(--text-info);border-color:#bbdaff}
+.status-select.status-interested{background-color:var(--surface-success);color:var(--text-success);border-color:var(--success-bg)}
+.status-select.status-no{background-color:var(--surface-critical);color:var(--text-critical);border-color:var(--critical-bg)}
+
+.expand-btn{
+  background:transparent;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:5px 12px;
+  font-size:11px;
+  color:var(--text-secondary);
+  cursor:pointer;
+  font-family:inherit;
+  font-weight:500;
+  transition:all .12s;
+}
+.expand-btn:hover{border-color:var(--border-strong);color:var(--text)}
+
+/* LEAD BODY */
+.lead-body{padding:24px 28px}
+
+.intel-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:26px;
+}
+.intel-card{
+  background:var(--surface-alt);
+  border-radius:var(--radius);
+  padding:16px 18px;
+  border:1px solid var(--border);
+  min-height:78px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.intel-value{
+  font-size:18px;
+  font-weight:700;
+  color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  line-height:1.2;
+  letter-spacing:-0.3px;
+}
+.intel-label{
+  font-size:10px;
+  color:var(--text-secondary);
+  margin-top:6px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  font-weight:600;
+}
+
+/* SCORES */
+.scores-section{margin-bottom:26px}
+.score-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:11px;
+}
+.score-row:last-child{margin-bottom:0}
+.score-name{
+  font-size:13px;
+  color:var(--text-secondary);
+  width:140px;
+  flex-shrink:0;
+  font-weight:500;
+}
+.score-track{flex:1;height:8px;background:var(--surface-alt);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.score-bar{height:100%;border-radius:4px;transition:width .6s ease}
+.score-value{
+  font-size:13px;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--text);
+  width:44px;
+  text-align:right;
+  flex-shrink:0;
+  font-weight:700;
+}
+
+/* SECTIONS */
+.section{margin-bottom:22px}
+.section:last-child{margin-bottom:0}
+.section-title{
+  font-size:11px;
+  font-weight:700;
+  color:var(--text-secondary);
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  margin-bottom:9px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.section-title::before{
+  content:'';
+  width:3px;
+  height:11px;
+  background:var(--brand);
+  border-radius:2px;
+  display:inline-block;
+}
+.section-content{
+  font-size:14px;
+  color:var(--text);
+  line-height:1.7;
+}
+
+/* BADGES */
+.badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{
+  padding:5px 11px;
+  border-radius:14px;
+  font-size:12px;
+  font-weight:500;
+  border:1px solid;
+  background:transparent;
+}
+.badge-critical{color:var(--text-critical);border-color:var(--critical-bg);background:var(--surface-critical)}
+.badge-warning{color:var(--text-warning);border-color:var(--warning-bg);background:var(--surface-warning)}
+.badge-success{color:var(--text-success);border-color:var(--success-bg);background:var(--surface-success)}
+.badge-info{color:var(--text-info);border-color:#bbdaff;background:var(--surface-info)}
+
+/* PITCH */
+.pitch-highlight{
+  background:linear-gradient(135deg,var(--surface-selected),var(--surface));
+  border-left:4px solid var(--brand);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:14px 18px;
+  font-size:14px;
+  color:var(--text);
+  line-height:1.65;
+  font-weight:500;
+}
+
+/* DM BOX */
+.dm-box{
+  background:linear-gradient(180deg,var(--surface-alt),var(--surface));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px 24px;
+  position:relative;
+  padding-right:80px;
+}
+.dm-text{
+  font-size:14px;
+  color:var(--text);
+  line-height:1.8;
+  white-space:pre-wrap;
+}
+.dm-copy-btn{
+  position:absolute;
+  top:14px;right:14px;
+  background:var(--surface);
+  border:1px solid var(--border-strong);
+  border-radius:6px;
+  padding:6px 12px;
+  font-size:12px;
+  color:var(--text);
+  cursor:pointer;
+  font-family:inherit;
+  font-weight:600;
+  box-shadow:var(--shadow-xs);
+  transition:all .12s;
+}
+.dm-copy-btn:hover{border-color:var(--brand);color:var(--brand)}
+
+/* FOOTER */
+.lead-footer{
+  padding:16px 28px;
+  border-top:1px solid var(--border);
+  background:var(--surface-alt);
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.btn-action{
+  padding:8px 14px;
+  font-size:12px;
+  font-weight:600;
+  border-radius:7px;
+  border:1px solid;
+  background:var(--surface);
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .12s;
+}
+.btn-action-info{color:var(--text-info);border-color:#bbdaff}
+.btn-action-info:hover{background:var(--surface-info)}
+.btn-action-success{color:var(--text-success);border-color:var(--success-bg)}
+.btn-action-success:hover{background:var(--surface-success)}
+.btn-action-critical{color:var(--text-critical);border-color:var(--critical-bg);margin-left:auto}
+.btn-action-critical:hover{background:var(--surface-critical)}
+
+/* COLLAPSED */
+.lead-card.collapsed .lead-body{display:none}
+.lead-card.collapsed .lead-footer{display:none}
+
+/* EMPTY */
+.empty-state{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:80px 40px;
+  text-align:center;
+  box-shadow:var(--shadow-sm);
+}
+.empty-icon{
+  font-size:52px;
+  margin-bottom:16px;
+  opacity:0.7;
+}
+.empty-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.3px}
+.empty-desc{font-size:14px;color:var(--text-secondary);max-width:420px;margin:0 auto;line-height:1.55}
+
+/* ERROR */
+.error-banner{
+  background:var(--surface-critical);
+  border:1px solid var(--critical-bg);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  font-size:14px;
+  color:var(--text-critical);
+  margin-bottom:16px;
+  display:none;
+  font-weight:600;
+}
+
+@media(max-width:1024px){
+  .layout{grid-template-columns:280px 1fr}
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;padding:16px}
+  .sidebar{position:static;height:auto}
+  .intel-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-banner{padding:28px 24px}
+  .hero-title{font-size:24px}
+  .hero-content{gap:20px}
+  .hero-right{width:100%;justify-content:space-around}
+  .lead-header{padding:18px 20px}
+  .lead-body{padding:20px}
+  .lead-footer{padding:14px 20px}
+  .nav{padding:0 16px}
+  .nav-metric{padding:0 12px;gap:12px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="logo-icon">TS</div>
+    <div>
+      <div class="logo-text">TS Digital <span class="logo-sub">Lead Intelligence</span></div>
+    </div>
+  </div>
+  <div class="nav-metric">
+    <div class="metric-block"><div class="metric-val" id="stat-total">0</div><div class="metric-lbl">Total</div></div>
+  </div>
+  <div class="nav-metric">
+    <div class="metric-block"><div class="metric-val" id="stat-dm">0</div><div class="metric-lbl">DM sent</div></div>
+  </div>
+  <div class="nav-metric">
+    <div class="metric-block"><div class="metric-val" id="stat-hot" style="color:var(--brand)">0</div><div class="metric-lbl">Interested</div></div>
+  </div>
+  <button class="btn btn-default btn-sm" onclick="exportCSV()">Export CSV</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-banner">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-tag"><span class="hero-tag-dot"></span> AI-powered prospect intelligence</div>
+        <h1 class="hero-title">Turn cold prospects into<br><span>warm conversations.</span></h1>
+        <p class="hero-sub">Discover Instagram businesses ready for Shopify. Full intel per lead — engagement scores, pain points, pitch angles, and ready-to-send DMs. All in one place.</p>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stat">
+          <div class="hero-stat-val">6</div>
+          <div class="hero-stat-lbl">Industries</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">12+</div>
+          <div class="hero-stat-lbl">Cities</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-val">∞</div>
+          <div class="hero-stat-lbl">Leads</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Industries</div>
+      <div class="industry-list" id="industry-list"></div>
+      <div class="input-row" style="margin-top:10px">
+        <input id="custom-industry-input" placeholder="Add custom industry..."/>
+        <button class="btn btn-default btn-sm" onclick="addCustomIndustry()">Add</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Cities</div>
+      <div class="city-tags" id="city-tags"></div>
+      <div class="input-row">
+        <input id="custom-city-input" placeholder="Add city..."/>
+        <button class="btn btn-default btn-sm" onclick="addCustomCity()">Add</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        <button class="btn btn-default btn-sm" onclick="selectMetros()" style="flex:1">Metros</button>
+        <button class="btn btn-default btn-sm" onclick="clearCities()" style="flex:1">Clear</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Follower range</div>
+      <select id="follower-range">
+        <option value="5,000 to 20,000">5K – 20K (easiest to close)</option>
+        <option value="10,000 to 50,000" selected>10K – 50K (sweet spot)</option>
+        <option value="50,000 to 200,000">50K – 200K (bigger brands)</option>
+        <option value="any follower count">Any range</option>
+      </select>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Lead quality</div>
+      <select id="quality-filter">
+        <option value="businesses that take orders via WhatsApp or Instagram DM with no proper website">No website (best)</option>
+        <option value="businesses with Instagram presence but no e-commerce store">No e-commerce</option>
+        <option value="any business with Instagram presence">Any</option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary" id="scout-btn" onclick="startScouting()">Scout leads</button>
+  </aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div class="page-title">Leads</div>
+      <div class="page-actions">
+        <button class="btn btn-default btn-sm" onclick="clearAll()">Clear all</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-input" placeholder="Search by name, handle, city..." oninput="filterLeads()"/>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setFilter('all',this)">All</button>
+        <button class="filter-tab" onclick="setFilter('New',this)">New</button>
+        <button class="filter-tab" onclick="setFilter('DM Sent',this)">DM sent</button>
+        <button class="filter-tab" onclick="setFilter('Interested',this)">Interested</button>
+      </div>
+    </div>
+
+    <div id="progress-card" style="display:none">
+      <div class="progress-card">
+        <div class="progress-header">
+          <span class="progress-status" id="progress-status">Scouting leads...</span>
+          <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="error-banner" id="error-banner"></div>
+    <div id="leads-container"></div>
+  </main>
+</div>
+
+<script>
+let leads = JSON.parse(localStorage.getItem('ts_leads_v4')||'[]');
+let activeFilter = 'all';
+let searchQuery = '';
+
+const INDUSTRIES = [
+  {id:'ethnic',label:'Ethnic wear / Sarees',emoji:'👗'},
+  {id:'cricket',label:'Cricket equipment',emoji:'🏏'},
+  {id:'boutique',label:'Fashion boutiques',emoji:'👘'},
+  {id:'jewellery',label:'Jewellery',emoji:'💍'},
+  {id:'homedecor',label:'Home decor',emoji:'🏡'},
+  {id:'leather',label:'Leather goods',emoji:'👜'},
+];
+
+const DEFAULT_CITIES = ['Delhi','Mumbai','Bangalore','Jaipur','Lucknow','Hyderabad','Pune','Ahmedabad','Chandigarh','Surat','Indore','Kanpur'];
+const METROS = ['Delhi','Mumbai','Bangalore','Hyderabad','Chennai','Pune'];
+
+let selectedIndustries = new Set(['ethnic']);
+let selectedCities = new Set();
+let customIndustries = [];
+
+function init(){
+  renderIndustries();
+  renderCities();
+  renderLeads();
+  updateStats();
+}
+
+function renderIndustries(){
+  const all = [...INDUSTRIES, ...customIndustries];
+  document.getElementById('industry-list').innerHTML = all.map(ind=>`
+    <div class="industry-item ${selectedIndustries.has(ind.id)?'active':''}" onclick="toggleIndustry('${ind.id}')">
+      <span class="industry-emoji">${ind.emoji}</span>
+      <span>${ind.label}</span>
+      <span class="industry-check">${selectedIndustries.has(ind.id)?'✓':''}</span>
+    </div>
+  `).join('');
+}
+
+function toggleIndustry(id){
+  if(selectedIndustries.has(id)) selectedIndustries.delete(id);
+  else selectedIndustries.add(id);
+  renderIndustries();
+}
+
+function addCustomIndustry(){
+  const input = document.getElementById('custom-industry-input');
+  const val = input.value.trim();
+  if(!val) return;
+  const id = 'c_'+Date.now();
+  customIndustries.push({id,label:val,emoji:'🏪'});
+  selectedIndustries.add(id);
+  input.value='';
+  renderIndustries();
+}
+
+function renderCities(){
+  document.getElementById('city-tags').innerHTML = DEFAULT_CITIES.map(c=>`
+    <span class="city-tag ${selectedCities.has(c)?'active':''}" onclick="toggleCity('${c}')">${c}</span>
+  `).join('');
+}
+
+function toggleCity(c){
+  if(selectedCities.has(c)) selectedCities.delete(c);
+  else selectedCities.add(c);
+  renderCities();
+}
+
+function addCustomCity(){
+  const input = document.getElementById('custom-city-input');
+  const val = input.value.trim();
+  if(!val) return;
+  if(!DEFAULT_CITIES.includes(val)) DEFAULT_CITIES.push(val);
+  selectedCities.add(val);
+  input.value='';
+  renderCities();
+}
+
+function selectMetros(){ METROS.forEach(c=>selectedCities.add(c)); renderCities(); }
+function clearCities(){ selectedCities.clear(); renderCities(); }
+
+async function startScouting(){
+  const industries = [...selectedIndustries];
+  const cities = [...selectedCities];
+  if(!industries.length){showError('Select at least one industry.');return;}
+  if(!cities.length){showError('Select at least one city.');return;}
+
+  const btn = document.getElementById('scout-btn');
+  btn.disabled = true;
+  btn.textContent = 'Scouting...';
+  document.getElementById('progress-card').style.display='block';
+  document.getElementById('error-banner').style.display='none';
+
+  const all = [...INDUSTRIES,...customIndustries];
+  const industryLabels = industries.map(id=>{
+    const ind = all.find(i=>i.id===id);
+    return ind?ind.label:id;
+  });
+
+  const followerRange = document.getElementById('follower-range').value;
+  const qualityFilter = document.getElementById('quality-filter').value;
+  const total = industries.length * cities.length;
+  let done = 0;
+
+  for(const industry of industryLabels){
+    for(const city of cities){
+      setProgress(done,total,`Scouting ${industry} in ${city}...`);
+      try{
+        await scoutBatch(industry, city, followerRange, qualityFilter);
+      }catch(e){console.error(e)}
+      done++;
+      setProgress(done,total,done===total?'Complete':null);
+      if(done<total) await sleep(600);
+    }
+  }
+
+  btn.disabled=false;
+  btn.textContent='Scout leads';
+  setTimeout(()=>{ document.getElementById('progress-card').style.display='none'; },2500);
+}
+
+async function scoutBatch(industry, city, followerRange, qualityFilter){
+  const prompt = `You are a business intelligence researcher for TS Digital, a Shopify consulting firm targeting Indian SMBs on Instagram.
+
+Search the web (Google, Instagram, Facebook, JustDial, IndiaMART, business directories) for REAL, currently-operating ${industry} businesses in ${city}, India with roughly ${followerRange} Instagram followers that look ${qualityFilter}. Do not invent or guess businesses — only include ones you actually found evidence of online. If you can't verify a detail (follower count, revenue, etc.), leave that field empty rather than estimating a fake-sounding number.
+
+Find up to 5 real businesses.
+
+Return this exact JSON schema:
+
+[{
+  "handle": "actual instagram handle if found, else empty string",
+  "name": "Business Name",
+  "city": "${city}",
+  "industry": "${industry}",
+  "emoji": "single relevant emoji",
+  "followers": "actual count/range if found, else empty string",
+  "estimated_monthly_revenue": "",
+  "order_method": "how they appear to take orders, based on what you found (e.g. DM/WhatsApp only, has a website, etc.)",
+  "content_quality": number 1-10 (your honest read of their actual page/content),
+  "engagement_quality": number 1-10,
+  "conversion_potential": number 1-10,
+  "website_status": "No website" or "Has website" or "Under construction" or "Unknown",
+  "key_observation": "one real, specific thing you found about this business — must be traceable to something you actually saw",
+  "pain_points": ["pain 1","pain 2","pain 3"],
+  "opportunity_tags": ["opp 1","opp 2"],
+  "pitch_angle": "the exact angle Tushar should use",
+  "dm": "personalised 5-6 line cold DM from Tushar Singh (24yo, TS Digital) referencing only real, verifiable details from key_observation. Sign: Tushar | TS Digital. Never mention Shopify by name.",
+  "source_url": "the page where you found this business"
+}]
+
+Return ONLY JSON array. No markdown, no preamble. Leave the array empty if you can't find real businesses matching the criteria — do not fabricate entries to fill the quota.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}],tools:[{type:'web_search_20250305',name:'web_search'}]})
+  });
+
+  if(!res.ok) throw new Error('API '+res.status);
+  const data = await res.json();
+  const text = data.content.map(i=>i.text||'').join('');
+  const clean = text.replace(/```json|```/g,'').trim();
+  const start = clean.indexOf('[');
+  const end = clean.lastIndexOf(']');
+  if(start===-1||end===-1) return;
+  const arr = JSON.parse(clean.slice(start,end+1));
+
+  const existing = new Set(leads.map(l=>l.handle+l.city));
+  const newLeads = arr
+    .filter(l=>!existing.has(l.handle+l.city))
+    .map(l=>({...l,id:'lead_'+Math.random().toString(36).slice(2,10),status:'New',added:new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'})}));
+
+  leads = [...newLeads,...leads];
+  saveLeads();
+  renderLeads();
+  updateStats();
+}
+
+function renderLeads(){
+  const container = document.getElementById('leads-container');
+  let filtered = leads.filter(l=>{
+    const matchFilter = activeFilter==='all'||l.status===activeFilter;
+    const matchSearch = !searchQuery||
+      l.name?.toLowerCase().includes(searchQuery)||
+      l.handle?.toLowerCase().includes(searchQuery)||
+      l.city?.toLowerCase().includes(searchQuery)||
+      l.industry?.toLowerCase().includes(searchQuery);
+    return matchFilter&&matchSearch;
+  });
+
+  if(!filtered.length){
+    container.innerHTML=`<div class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <div class="empty-title">${leads.length?'No leads match your filter':'Ready to find your next client'}</div>
+      <div class="empty-desc">${leads.length?'Try adjusting the filter or search':'Select industries and cities in the sidebar, then hit Scout leads to build your prospect list with full intelligence.'}</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(l=>renderLeadCard(l)).join('');
+}
+
+function renderLeadCard(l){
+  const scoreColor = (s)=>{
+    if(s>=8) return 'var(--brand)';
+    if(s>=6) return 'var(--text-warning)';
+    return 'var(--text-critical)';
+  };
+  const statusClass = {
+    'New':'status-new','DM Sent':'status-dm','Interested':'status-interested','Not Interested':'status-no'
+  }[l.status]||'status-new';
+
+  const painTags = (l.pain_points||[]).slice(0,3).map(p=>`<span class="badge badge-critical">${escHtml(p)}</span>`).join('');
+  const oppTags = (l.opportunity_tags||[]).map(t=>`<span class="badge badge-success">${escHtml(t)}</span>`).join('');
+
+  return `<div class="lead-card" id="card-${l.id}">
+    <div class="lead-header">
+      <div class="lead-avatar">${l.emoji||'🏪'}</div>
+      <div class="lead-header-content">
+        <div class="lead-handle">
+          <a href="https://instagram.com/${(l.handle||'').replace('@','')}" target="_blank">${escHtml(l.handle||'')}</a>
+          <span class="lead-followers-badge">${escHtml(l.followers||'')}</span>
+        </div>
+        <div class="lead-name">${escHtml(l.name||'')}</div>
+        <div class="lead-meta">
+          <span>📍 ${escHtml(l.city||'')}</span>
+          <span class="lead-meta-dot"></span>
+          <span>${escHtml(l.industry||'')}</span>
+          <span class="lead-meta-dot"></span>
+          <span>Added ${l.added||''}</span>
+          ${l.source_url?`<span class="lead-meta-dot"></span><a href="${escHtml(l.source_url)}" target="_blank">source ↗</a>`:''}
+        </div>
+      </div>
+      <div class="lead-header-actions">
+        <select class="status-select ${statusClass}" onchange="updateStatus('${l.id}',this.value)">
+          <option ${l.status==='New'?'selected':''}>New</option>
+          <option ${l.status==='DM Sent'?'selected':''}>DM Sent</option>
+          <option ${l.status==='Interested'?'selected':''}>Interested</option>
+          <option ${l.status==='Not Interested'?'selected':''}>Not Interested</option>
+        </select>
+        <button class="expand-btn" onclick="toggleCard('${l.id}')">Collapse</button>
+      </div>
+    </div>
+
+    <div class="lead-body">
+      <div class="intel-grid">
+        <div class="intel-card">
+          <div class="intel-value" style="color:var(--text-warning)">${escHtml(l.estimated_monthly_revenue||'—')}</div>
+          <div class="intel-label">Est. revenue</div>
+        </div>
+        <div class="intel-card">
+          <div class="intel-value">${escHtml(l.followers||'—')}</div>
+          <div class="intel-label">Followers</div>
+        </div>
+        <div class="intel-card">
+          <div class="intel-value" style="color:${scoreColor(l.conversion_potential)}">${l.conversion_potential||'—'}/10</div>
+          <div class="intel-label">Conv. score</div>
+        </div>
+        <div class="intel-card">
+          <div class="intel-value" style="font-size:13px;font-weight:600">${escHtml(l.website_status||'—')}</div>
+          <div class="intel-label">Website</div>
+        </div>
+      </div>
+
+      <div class="scores-section">
+        <div class="score-row">
+          <span class="score-name">Content quality</span>
+          <div class="score-track"><div class="score-bar" style="width:${(l.content_quality||0)*10}%;background:${scoreColor(l.content_quality)}"></div></div>
+          <span class="score-value">${l.content_quality||0}/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-name">Engagement</span>
+          <div class="score-track"><div class="score-bar" style="width:${(l.engagement_quality||0)*10}%;background:${scoreColor(l.engagement_quality)}"></div></div>
+          <span class="score-value">${l.engagement_quality||0}/10</span>
+        </div>
+        <div class="score-row">
+          <span class="score-name">Conversion</span>
+          <div class="score-track"><div class="score-bar" style="width:${(l.conversion_potential||0)*10}%;background:${scoreColor(l.conversion_potential)}"></div></div>
+          <span class="score-value">${l.conversion_potential||0}/10</span>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Key observation</div>
+        <div class="section-content">${escHtml(l.key_observation||'—')}</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Current order method</div>
+        <div class="section-content">${escHtml(l.order_method||'—')}</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Pain points</div>
+        <div class="badges">${painTags}</div>
+      </div>
+
+      ${oppTags?`<div class="section">
+        <div class="section-title">Opportunities</div>
+        <div class="badges">${oppTags}</div>
+      </div>`:''}
+
+      <div class="section">
+        <div class="section-title">Pitch angle</div>
+        <div class="pitch-highlight">${escHtml(l.pitch_angle||'—')}</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Ready-to-send DM</div>
+        <div class="dm-box">
+          <div class="dm-text" id="dm-${l.id}">${escHtml(l.dm||'—')}</div>
+          <button class="dm-copy-btn" onclick="copyDM('${l.id}')">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lead-footer">
+      <button class="btn-action btn-action-info" onclick="updateStatus('${l.id}','DM Sent')">Mark DM sent</button>
+      <button class="btn-action btn-action-success" onclick="updateStatus('${l.id}','Interested')">Interested</button>
+      <button class="btn-action btn-action-critical" onclick="deleteLead('${l.id}')">Remove</button>
+    </div>
+  </div>`;
+}
+
+function toggleCard(id){
+  const card = document.getElementById('card-'+id);
+  const btn = card.querySelector('.expand-btn');
+  card.classList.toggle('collapsed');
+  btn.textContent = card.classList.contains('collapsed')?'Expand':'Collapse';
+}
+
+function copyDM(id){
+  const text = document.getElementById('dm-'+id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector(`#card-${id} .dm-copy-btn`);
+    if(btn){btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',2000);}
+  });
+}
+
+function updateStatus(id,status){
+  const lead = leads.find(l=>l.id===id);
+  if(lead){lead.status=status;saveLeads();renderLeads();updateStats();}
+}
+
+function deleteLead(id){
+  leads = leads.filter(l=>l.id!==id);
+  saveLeads();renderLeads();updateStats();
+}
+
+function setFilter(f,el){
+  activeFilter=f;
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderLeads();
+}
+
+function filterLeads(){
+  searchQuery = document.getElementById('search-input').value.toLowerCase();
+  renderLeads();
+}
+
+function updateStats(){
+  document.getElementById('stat-total').textContent=leads.length;
+  document.getElementById('stat-hot').textContent=leads.filter(l=>l.status==='Interested').length;
+  document.getElementById('stat-dm').textContent=leads.filter(l=>l.status==='DM Sent').length;
+}
+
+function setProgress(done,total,msg){
+  const pct = total?Math.round((done/total)*100):0;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-pct').textContent=pct+'%';
+  if(msg) document.getElementById('progress-status').textContent=msg;
+}
+
+function showError(msg){
+  const el=document.getElementById('error-banner');
+  el.textContent=msg;el.style.display='block';
+  setTimeout(()=>el.style.display='none',4000);
+}
+
+function saveLeads(){localStorage.setItem('ts_leads_v4',JSON.stringify(leads));}
+
+function clearAll(){
+  if(confirm('Clear all leads?')){
+    leads=[];saveLeads();renderLeads();updateStats();
+  }
+}
+
+function exportCSV(){
+  if(!leads.length){showError('No leads to export.');return;}
+  const headers=['Handle','Name','City','Industry','Followers','Est Revenue','Order Method','Content','Engagement','Conversion','Website','Pitch','Status'];
+  const rows=leads.map(l=>[l.handle,l.name,l.city,l.industry,l.followers,l.estimated_monthly_revenue,l.order_method,l.content_quality,l.engagement_quality,l.conversion_potential,l.website_status,l.pitch_angle,l.status]);
+  const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='ts-digital-leads.csv';a.click();
+  URL.revokeObjectURL(url);
+}
+
+function escHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+init();
+</script>
+</body>
+</html>
