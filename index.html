@@ -211,7 +211,7 @@ body{
   position:sticky;
   top:80px;
   box-shadow:var(--shadow-sm);
-  border:1px solid var(--border);
+  border:1px solid var(--border);api.anthropic.com
 }
 .sidebar-section{margin-bottom:26px}
 .sidebar-section:last-of-type{margin-bottom:20px}
@@ -1042,10 +1042,10 @@ Return this exact JSON schema:
 
 Return ONLY JSON array. No markdown, no preamble. Leave the array empty if you can't find real businesses matching the criteria — do not fabricate entries to fill the quota.`;
 
-  const res = await fetch('https://api.anthropic.com/v1/messages',{
+ const res = await fetch('/api/scout',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:prompt}],tools:[{type:'web_search_20250305',name:'web_search'}]})
+    body:JSON.stringify({prompt})
   });
 
   if(!res.ok) throw new Error('API '+res.status);
